@@ -1,0 +1,65 @@
+ ~/config/chk-hyb-disk-usage ${ENV}
+	
+[asw@uktapp43 config]$ cat chk-hyb-disk-usage
+#######################################################################
+# This scripts displays disk space is available on the Hybris Servers #
+#######################################################################
+
+if [ $# -lt 1 ]
+then
+        echo "Usage: ./chk-hyb-disk-usage <ENV>"
+        exit 0
+fi
+
+
+ENVR=$1
+ENV=`echo ${ENVR} | tr '[:upper:]' '[:lower:]'`
+FS="/tui/hybris"
+
+echo " "
+echo "Disk space used in the Hybris servers..."
+
+echo " "
+echo "Server                 Size  Used Avail Use% Mounted on"
+
+# Gather all hybris server details
+FLE="$HOME/${ENV}-all-hybris" && \
+for SRVR in `cat $FLE`; do \
+echo "==== $SRVR" && \
+ssh asw@$SRVR "\
+df -h | grep ${FS} | grep "%" && \
+sleep 2" ; \
+done
+
+# Final Line
+
+
++++++++++
+output
+++++++++
+Server                 Size  Used Avail Use% Mounted on
+==== ukthyb06.uk.tui.de
+                      109G   71G   33G  69% /tui/hybris
+==== ukthyb62
+                       49G   21G   25G  46% /tui/hybris
+==== ukthyb63
+                       49G   21G   26G  46% /tui/hybris
+==== ukthyb64
+                       49G   21G   26G  45% /tui/hybris
+==== ukthyb65
+                       49G   21G   26G  45% /tui/hybris
+==== ukthyb66
+                       49G   21G   26G  45% /tui/hybris
+==== ukthyb67
+                       49G   21G   26G  45% /tui/hybris
+==== ukthyb68
+                       49G   32G   30G  70% /tui/hybris
+==== ukthyb69
+                       49G   32G   30G  69% /tui/hybris
+==== ukthyb70
+                       59G   24G   32G  43% /tui/hybris
+==== ukthyb71
+                       59G   24G   33G  43% /tui/hybris
+
+
+
